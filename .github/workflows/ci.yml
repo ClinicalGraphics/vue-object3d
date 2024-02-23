@@ -1,0 +1,33 @@
+name: Main CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-lib:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: "npm"
+    - run: npm ci
+    - run: npm run test
+  build-playground:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: "npm"
+    - run: npm ci
+      working-directory: playground
+    - run: npm run test
+      working-directory: playground
